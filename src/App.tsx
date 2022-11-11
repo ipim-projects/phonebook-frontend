@@ -1,29 +1,24 @@
-import React from 'react';
-import { Button } from 'antd';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import MainLayout from "./components/layout/MainLayout";
+import Home from "./pages/Home";
+import Tables from "./pages/Tables";
+import NoMatch from "./pages/NoMatch";
+import JobTable from "./components/job/JobTable";
+import EmployeeTable from "./components/employee/EmployeeTable";
 
 function App() {
 	return (
-		<div className="App">
-			<header className="App-header">
-				<img src={logo} className="App-logo" alt="logo"/>
-				<p>
-					Edit <code>src/App.tsx</code> and save to reload.
-				</p>
-				<a
-					className="App-link"
-					href="https://reactjs.org"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn React
-				</a>
-                <div>
-                    <Button type="primary">Button</Button>
-                </div>
-			</header>
-		</div>
+		<Routes>
+			<Route path="/" element={<MainLayout/>}>
+				<Route index element={<Home/>} />
+				<Route path="/jobs" element={<JobTable/>}/>
+				<Route path="/employees" element={<EmployeeTable/>}/>
+				<Route path="/tables" element={<Tables/>}/>
+				<Route path="*" element={<NoMatch/>}/>
+			</Route>
+		</Routes>
 	);
 }
 
