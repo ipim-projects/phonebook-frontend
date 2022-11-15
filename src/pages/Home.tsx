@@ -1,7 +1,8 @@
 import React from "react";
+import EmployeeTable from "../components/employee/EmployeeTable";
 
 const Home: React.FC = () => (
-	<div className="site-layout-content">Home</div>
+	<EmployeeTable/>
 );
 
 export default Home;

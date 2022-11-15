@@ -3,6 +3,7 @@ import { Button, Table } from "antd";
 import type { ColumnsType } from 'antd/es/table';
 import api from "../../api/api";
 import JobCreateForm from "./JobCreateForm";
+import { openNotification } from "../helpers/notification";
 
 interface Job {
 	id: number;
@@ -38,10 +39,16 @@ const JobTable: React.FC = () => {
 	const fetchData = () => {
 		setLoading(true);
 		api.get('jobs/')
-			.then(response => {
-				setDataSource(response.data._embedded.jobs);
-				setLoading(false);
-			});
+			.then(response => setDataSource(response.data))
+			.catch(error => {
+				if (error.response) {
+					const errorData = error.response.data;
+					openNotification('error', errorData.error, errorData.message);
+				} else {
+					openNotification('error', 'Ошибка', error.message);
+				}
+			})
+			.finally(() => setLoading(false));
 	};
 
 	const onCreate = (values: any) => {
@@ -51,6 +58,14 @@ const JobTable: React.FC = () => {
 				console.log('Response from server on create:', response);
 				const { id, company, jobTitle, address } = response.data;
 				setDataSource([...dataSource, { id, company, jobTitle, address }]);
+			})
+			.catch(error => {
+				if (error.response) {
+					const errorData = error.response.data;
+					openNotification('error', errorData.error, errorData.message);
+				} else {
+					openNotification('error', 'Ошибка', error.message);
+				}
 			});
 		setOpenCreateForm(false);
 	};

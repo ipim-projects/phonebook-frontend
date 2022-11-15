@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const NoMatch: React.FC = () => (
-	<div className="site-layout-content">
+	<div>
 		<h2>Страница не найдена!</h2>
 		<p>
 			<Link to="/">На главную страницу</Link>
