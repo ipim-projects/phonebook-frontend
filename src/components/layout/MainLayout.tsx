@@ -26,7 +26,7 @@ const items: MenuProps['items'] = [
 		],
 	},
 	{
-		label: 'Отчёты',
+		label: <Link to="/reports">Отчёты</Link>,
 		key: 'reports'
 	}
 ];
@@ -54,6 +54,12 @@ const breadcrumbTitles = (path: string): Route => {
 		return {
 			path: 'employees',
 			breadcrumbName: 'Сотрудники',
+		}
+	}
+	if (path === '/reports') {
+		return {
+			path: 'reports',
+			breadcrumbName: 'Отчёты',
 		}
 	}
 	return {

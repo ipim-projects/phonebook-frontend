@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import NoMatch from "./pages/NoMatch";
 import JobTable from "./components/job/JobTable";
 import EmployeeTable from "./components/employee/EmployeeTable";
+import Reports from "./pages/Reports";
 
 function App() {
 	return (
@@ -14,7 +15,7 @@ function App() {
 				<Route index element={<Home/>} />
 				<Route path="/refs/jobs" element={<JobTable/>}/>
 				<Route path="/refs/employees" element={<EmployeeTable/>}/>
-				{/*<Route path="/reports" element={<Reports/>}/>*/}
+				<Route path="/reports" element={<Reports/>}/>
 				<Route path="*" element={<NoMatch/>}/>
 			</Route>
 		</Routes>
