@@ -83,19 +83,39 @@ const EmployeeTable: React.FC = () => {
 
 	const onCreate = (values: any) => {
 		console.log('Received values of form: ', values);
-		api.post('employees/', { ...values, job: { id: 2 } })
+		const {
+			firstName,
+			lastName,
+			birthdate,
+			mobilePhone,
+			workPhone,
+			email,
+			job
+		} = values;
+		const payload: any = {
+			firstName,
+			lastName,
+			birthdate: birthdate.format('YYYY-MM-DD'),
+			mobilePhone,
+			workPhone,
+			email
+		};
+		if (job) {
+			payload.job = { id: job };
+		}
+		api.post('employees/', payload)
 			.then(response => {
 				console.log('Response from server on create:', response);
-				const { id, firstName, lastName, birthdate, mobilePhone, workPhone, email } = response.data;
+				const { id, firstName, lastName, birthdate, mobilePhone, workPhone, email, job } = response.data;
 				setDataSource([...dataSource, {
 					id,
 					firstName,
 					lastName,
-					birthdate: birthdate.format('YYYY-MM-DD'),
+					birthdate,
 					mobilePhone,
 					workPhone,
 					email,
-					job: {}
+					job
 				}]);
 			})
 			.catch(error => {

@@ -1,6 +1,8 @@
-import { DatePicker, Form, Input, Modal } from 'antd';
-import React from 'react';
+import { DatePicker, Form, Input, Modal, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
 import moment from "moment";
+import api from "../../api/api";
+import { openNotification } from "../helpers/notification";
 
 interface EmployeeValues {
 	firstName: string;
@@ -9,6 +11,13 @@ interface EmployeeValues {
 	mobilePhone: string;
 	workPhone: string;
 	email: string;
+}
+
+interface Job {
+	id: number;
+	company: string;
+	jobTitle: string;
+	address: string;
 }
 
 interface EmployeeCreateFormProps {
@@ -22,7 +31,22 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 																   onCreate,
 																   onCancel,
 															   }) => {
+	const [jobs, setJobs] = useState<Job[]>([]);
 	const [form] = Form.useForm();
+
+	useEffect(() => {
+		api.get('jobs/')
+			.then(response => setJobs(response.data))
+			.catch(error => {
+				if (error.response) {
+					const errorData = error.response.data;
+					openNotification('error', errorData.error, errorData.message);
+				} else {
+					openNotification('error', 'Ошибка', error.message);
+				}
+			})
+	}, []);
+
 	return (
 		<Modal
 			open={open}
@@ -67,7 +91,7 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 					label="Дата рождения"
 					rules={[{ required: true, message: 'Необходимо ввести дату рождения' }]}
 				>
-					<DatePicker/>
+					<DatePicker placeholder="Выберете дату"/>
 				</Form.Item>
 				<Form.Item
 					name="mobilePhone"
@@ -81,6 +105,22 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 				</Form.Item>
 				<Form.Item name="email" label="Эл. почта">
 					<Input/>
+				</Form.Item>
+				<Form.Item name="job" label="Место работы">
+					<Select
+						showSearch
+						placeholder="Выберете место работы"
+						optionFilterProp="children"
+						filterOption={(input, option) =>
+							(option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+						}
+						options={
+							jobs.map(job => ({
+								value: job.id,
+								label: `${job.company}, ${job.jobTitle}`
+							}))
+						}
+					/>
 				</Form.Item>
 			</Form>
 		</Modal>

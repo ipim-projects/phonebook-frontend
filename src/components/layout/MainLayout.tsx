@@ -73,15 +73,11 @@ const itemRender = (route: Route, params: any, routes: Array<Route>, paths: Arra
 
 const MainLayout: React.FC = () => {
 	const location = useLocation();
-	console.log('location', location, location.pathname.split('/'));
 	const title = breadcrumbTitles(location.pathname).breadcrumbName;
-	console.log('title', title);
 	const path: string[] = location.pathname.split('/').filter(item => item !== '');
 	const routes = path.reduce((prev: Route[], curr) => {
-		console.log(`${prev.map(route => route.path).join('/')}/${curr}`);
 		return [...prev, breadcrumbTitles(`${prev.map(route => route.path).join('/')}/${curr}`)];
 	}, [breadcrumbTitles('/')]);
-	console.log('routes', routes);
 
 	return <Layout style={{ height: '100vh' }}>
 		<Header>
