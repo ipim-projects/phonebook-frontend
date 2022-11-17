@@ -87,7 +87,8 @@ const EmployeeTable: React.FC = () => {
 			firstName,
 			lastName,
 			birthdate,
-			mobilePhone,
+			mobilePhoneNumber,
+			mobilePhoneCode,
 			workPhone,
 			email,
 			job
@@ -96,7 +97,7 @@ const EmployeeTable: React.FC = () => {
 			firstName,
 			lastName,
 			birthdate: birthdate.format('YYYY-MM-DD'),
-			mobilePhone,
+			mobilePhone: `${mobilePhoneCode}-${mobilePhoneNumber}`,
 			workPhone,
 			email
 		};
