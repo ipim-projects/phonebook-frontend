@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, Table } from "antd";
+import { Button, Input, Space, Table } from "antd";
 import type { ColumnsType } from 'antd/es/table';
-import moment from 'moment';
 import api from "../../api/api";
 import EmployeeCreateForm from "./EmployeeCreateForm";
 import { openNotification } from "../helpers/notification";
+import { Link } from "react-router-dom";
+import { Employee } from "../../types/entities";
 
-interface Employee {
-	id: number;
-	firstName: string;
-	lastName: string;
-	birthdate: moment.Moment;
-	mobilePhone: string;
-	workPhone: string;
-	email: string;
-	job: object;
-}
+const { Search } = Input;
 
 const columns: ColumnsType<Employee> = [
 	{
 		title: 'id',
 		dataIndex: 'id',
+		render: id => <Link to={`/refs/employees/${id}`}>{id}</Link>,
 	},
 	{
 		title: 'Имя',
@@ -61,10 +54,16 @@ const columns: ColumnsType<Employee> = [
 	},
 ];
 
-const EmployeeTable: React.FC = () => {
+interface EmployeeTableProps {
+	isHome?: boolean;
+}
+
+const EmployeeTable: React.FC<EmployeeTableProps> = ({ isHome = false }) => {
 	const [dataSource, setDataSource] = useState<Employee[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [openCreateForm, setOpenCreateForm] = useState(false);
+	// const [filteredData, setFilteredData] = useState<Employee[]>([]);
+	const [searchValue, setSearchValue] = useState('');
 
 	const fetchData = () => {
 		setLoading(true);
@@ -134,15 +133,35 @@ const EmployeeTable: React.FC = () => {
 		fetchData();
 	}, []);
 
-	return <div>
-		<Button
-			onClick={() => {
-				setOpenCreateForm(true);
-			}}
-			type="primary"
-			style={{ marginBottom: 16 }}>
-			Добавить
-		</Button>
+	const handleFilter = (value: string) => {
+		setSearchValue(value.trim());
+	}
+
+	const filteredData = searchValue === ''
+		? dataSource
+		: dataSource.filter((value) =>
+			value.firstName.toLowerCase().includes(searchValue.toLowerCase())
+			|| value.lastName.toLowerCase().includes(searchValue.toLowerCase())
+			|| value.mobilePhone.toLowerCase().includes(searchValue.toLowerCase())
+		);
+
+	return <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+		{isHome
+			? <Search
+				placeholder="Поиск по имени, фамилии или номеру мобильного телефона"
+				onSearch={(e) => handleFilter(e)}
+				allowClear
+				style={{ width: 600 }}
+			/>
+			: <Button
+				onClick={() => {
+					setOpenCreateForm(true);
+				}}
+				type="primary"
+				style={{ marginBottom: 16 }}>
+				Добавить
+			</Button>
+		}
 		<EmployeeCreateForm
 			open={openCreateForm}
 			onCreate={onCreate}
@@ -153,10 +172,10 @@ const EmployeeTable: React.FC = () => {
 		<Table
 			columns={columns}
 			rowKey={record => record.id}
-			dataSource={dataSource}
+			dataSource={filteredData}
 			loading={loading}
 		/>
-	</div>;
+	</Space>;
 }
 
 export default EmployeeTable;

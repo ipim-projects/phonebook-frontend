@@ -32,6 +32,7 @@ const items: MenuProps['items'] = [
 ];
 
 const breadcrumbTitles = (path: string): Route => {
+	console.log(path);
 	if (path === '/') {
 		return {
 			path: '',
@@ -54,6 +55,12 @@ const breadcrumbTitles = (path: string): Route => {
 		return {
 			path: 'employees',
 			breadcrumbName: 'Сотрудники',
+		}
+	}
+	if (/^\/refs\/employees\/(\d+)$/.test(path)) {
+		return {
+			path: `employees_${path.split('/').pop()}`,
+			breadcrumbName: 'Информация о сотруднике',
 		}
 	}
 	if (path === '/reports') {

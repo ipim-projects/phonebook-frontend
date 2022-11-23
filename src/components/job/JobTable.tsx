@@ -4,13 +4,7 @@ import type { ColumnsType } from 'antd/es/table';
 import api from "../../api/api";
 import JobCreateForm from "./JobCreateForm";
 import { openNotification } from "../helpers/notification";
-
-interface Job {
-	id: number;
-	company: string;
-	jobTitle: string;
-	address: string;
-}
+import { Job } from "../../types/entities";
 
 const columns: ColumnsType<Job> = [
 	{
