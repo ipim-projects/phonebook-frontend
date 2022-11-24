@@ -19,3 +19,5 @@ export interface Job {
 }
 
 export type CoworkersType = 'company' | 'job' | 'address';
+
+export type ExportType = 'phonebook' | 'employee-job';

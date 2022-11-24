@@ -90,7 +90,7 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({ isHome = false }) => {
 			mobilePhoneCode,
 			workPhone,
 			email,
-			job
+			jobId
 		} = values;
 		const payload: any = {
 			firstName,
@@ -98,11 +98,9 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({ isHome = false }) => {
 			birthdate: birthdate.format('YYYY-MM-DD'),
 			mobilePhone: `${mobilePhoneCode}-${mobilePhoneNumber}`,
 			workPhone,
-			email
+			email,
+			jobId
 		};
-		if (job) {
-			payload.job = { id: job };
-		}
 		api.post('employees/', payload)
 			.then(response => {
 				console.log('Response from server on create:', response);

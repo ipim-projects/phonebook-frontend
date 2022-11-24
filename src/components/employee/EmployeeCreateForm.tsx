@@ -137,7 +137,7 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 				<Form.Item name="email" label="Эл. почта" rules={[{ type: 'email' }]}>
 					<Input/>
 				</Form.Item>
-				<Form.Item name="job" label="Место работы">
+				<Form.Item name="jobId" label="Место работы">
 					<Select
 						showSearch
 						placeholder="Выберете место работы"

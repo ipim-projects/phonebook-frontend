@@ -28,11 +28,14 @@ const items: MenuProps['items'] = [
 	{
 		label: <Link to="/reports">Отчёты</Link>,
 		key: 'reports'
+	},
+	{
+		label: <Link to="/export">Экспорт</Link>,
+		key: 'export'
 	}
 ];
 
 const breadcrumbTitles = (path: string): Route => {
-	console.log(path);
 	if (path === '/') {
 		return {
 			path: '',
@@ -69,6 +72,12 @@ const breadcrumbTitles = (path: string): Route => {
 			breadcrumbName: 'Отчёты',
 		}
 	}
+	if (path === '/export') {
+		return {
+			path: 'export',
+			breadcrumbName: 'Экспорт',
+		}
+	}
 	return {
 		path: 'nomatch',
 		breadcrumbName: 'NoMatch',
@@ -92,7 +101,7 @@ const MainLayout: React.FC = () => {
 		return [...prev, breadcrumbTitles(`${prev.map(route => route.path).join('/')}/${curr}`)];
 	}, [breadcrumbTitles('/')]);
 
-	return <Layout style={{ height: '100vh' }}>
+	return <Layout style={{ height: '100%' }}>
 		<Header>
 			<img className="logo" src="/logo.png" alt="Phonebook"/>
 			<Menu
