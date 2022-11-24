@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CoworkersType, Employee } from "../types/entities";
 import Coworkers from "../components/employee/Coworkers";
-import { Descriptions, Radio, RadioChangeEvent, Space } from "antd";
+import { Button, Descriptions, Divider, Radio, RadioChangeEvent, Space } from "antd";
 import api from "../api/api";
 import { openNotification } from "../components/helpers/notification";
+import Title from "antd/es/typography/Title";
 
 const EmployeeDetails: React.FC = () => {
 	const { id } = useParams();
@@ -24,6 +25,19 @@ const EmployeeDetails: React.FC = () => {
 			});
 	}, [id]);
 
+	const onDelete = () => {
+		api.delete(`employees/${id}/`)
+			.then(response => console.log(response.data))
+			.catch(error => {
+				if (error.response) {
+					const errorData = error.response.data;
+					openNotification('error', errorData.error, errorData.message);
+				} else {
+					openNotification('error', 'Ошибка', error.message);
+				}
+			});
+	}
+
 	return <div>
 		<Space direction="vertical" size="middle" style={{ display: 'flex' }}>
 			<Descriptions title="Общая">
@@ -34,7 +48,17 @@ const EmployeeDetails: React.FC = () => {
 				<Descriptions.Item label="Рабочий телефон">{employee?.workPhone}</Descriptions.Item>
 				<Descriptions.Item label="Эл. почта">{employee?.email}</Descriptions.Item>
 			</Descriptions>
-			<p><b>Поиск коллег</b></p>
+			<Descriptions title="Место работы">
+				<Descriptions.Item label="Компания">{employee?.job?.company}</Descriptions.Item>
+				<Descriptions.Item label="Должность">{employee?.job?.jobTitle}</Descriptions.Item>
+				<Descriptions.Item label="Адрес">{employee?.job?.address}</Descriptions.Item>
+			</Descriptions>
+			<Space>
+				<Button type="primary">Редактировать</Button>
+				<Button danger onClick={onDelete}>Удалить</Button>
+			</Space>
+			<Divider/>
+			<Title level={4}>Поиск коллег</Title>
 			<Radio.Group
 				name="coworkerGroup"
 				value={type}

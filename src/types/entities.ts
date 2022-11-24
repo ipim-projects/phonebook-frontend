@@ -8,7 +8,7 @@ export interface Employee {
 	mobilePhone: string;
 	workPhone: string;
 	email: string;
-	job: object;
+	job: Job;
 }
 
 export interface Job {
