@@ -49,6 +49,10 @@ const columns: ColumnsType<Employee> = [
 			{
 				title: 'Должность',
 				dataIndex: ['job', 'jobTitle'],
+			},
+			{
+				title: 'Адрес',
+				dataIndex: ['job', 'address'],
 			}
 		]
 	},

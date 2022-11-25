@@ -35,7 +35,11 @@ const Export: React.FC = () => {
 					enddate: endDate,
 				}
 			})
-			.then(response => console.log(response.data))
+			.then(response => openNotification(
+				'success',
+				'Результат выгрузки',
+				`Выгружено записей: ${response.data.length}`
+			))
 			.catch(error => {
 				if (error.response) {
 					const errorData = error.response.data;
@@ -58,7 +62,7 @@ const Export: React.FC = () => {
 				label="Период выгрузки"
 				rules={[{ required: true, message: 'Необходимо выбрать период выгрузки' }]}
 			>
-				<RangePicker placeholder={['С','По']}/>
+				<RangePicker placeholder={['С', 'По']}/>
 			</Form.Item>
 			<Form.Item
 				name="exportType"
