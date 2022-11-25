@@ -62,7 +62,6 @@ const EmployeeTable: React.FC<EmployeeTableProps> = ({ isHome = false }) => {
 	const [dataSource, setDataSource] = useState<Employee[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [openCreateForm, setOpenCreateForm] = useState(false);
-	// const [filteredData, setFilteredData] = useState<Employee[]>([]);
 	const [searchValue, setSearchValue] = useState('');
 
 	const fetchData = () => {

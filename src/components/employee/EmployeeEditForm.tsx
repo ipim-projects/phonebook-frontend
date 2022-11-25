@@ -3,21 +3,34 @@ import React, { useEffect, useState } from 'react';
 import api from "../../api/api";
 import { openNotification } from "../helpers/notification";
 import { MaskedInput } from "antd-mask-input";
-import { EmployeeFormValues, Job } from "../../types/entities";
+import { Employee, EmployeeFormValues, Job } from "../../types/entities";
+import moment from "moment";
 
-interface EmployeeCreateFormProps {
+interface EmployeeEditFormProps {
 	open: boolean;
-	onCreate: (values: EmployeeFormValues) => void;
+	employee: Employee | undefined;
+	onUpdate: (values: EmployeeFormValues) => void;
 	onCancel: () => void;
 }
 
-const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
-																   open,
-																   onCreate,
-																   onCancel,
-															   }) => {
+const EmployeeEditForm: React.FC<EmployeeEditFormProps> = ({
+															   open,
+															   employee,
+															   onUpdate,
+															   onCancel,
+														   }) => {
 	const [jobs, setJobs] = useState<Job[]>([]);
 	const [form] = Form.useForm();
+
+	useEffect(() => {
+		form.setFieldsValue({
+			...employee,
+			birthdate: moment(employee?.birthdate),
+			mobilePhoneCode: employee?.mobilePhone.slice(0, 3) ?? "495",
+			mobilePhoneNumber: employee?.mobilePhone.slice(4),
+			jobId: employee?.job?.id
+		});
+	}, [form, employee]);
 
 	useEffect(() => {
 		api.get('jobs/')
@@ -49,8 +62,8 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 	return (
 		<Modal
 			open={open}
-			title="Новый сотрудник"
-			okText="Добавить"
+			title="Редактирование данных сотрудника"
+			okText="Сохранить"
 			cancelText="Отмена"
 			onCancel={() => {
 				form.resetFields();
@@ -60,7 +73,7 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 				form
 					.validateFields()
 					.then(values => {
-						onCreate(values);
+						onUpdate(values);
 						form.resetFields();
 					})
 					.catch(info => {
@@ -72,6 +85,13 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 				form={form}
 				layout="vertical"
 				name="form_in_modal"
+				initialValues={{
+					...employee,
+					birthdate: moment(employee?.birthdate),
+					mobilePhoneCode: employee?.mobilePhone.slice(0, 3) ?? "495",
+					mobilePhoneNumber: employee?.mobilePhone.slice(4),
+					jobId: employee?.job?.id
+				}}
 			>
 				<Form.Item
 					name="lastName"
@@ -107,7 +127,6 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 							<Form.Item
 								name="mobilePhoneCode"
 								noStyle
-								initialValue="495"
 							>
 								{selectBefore}
 							</Form.Item>
@@ -142,4 +161,4 @@ const EmployeeCreateForm: React.FC<EmployeeCreateFormProps> = ({
 	);
 };
 
-export default EmployeeCreateForm;
+export default EmployeeEditForm;

@@ -4,7 +4,7 @@ export interface Employee {
 	id: number;
 	firstName: string;
 	lastName: string;
-	birthdate: moment.Moment;
+	birthdate: moment.Moment | string;
 	mobilePhone: string;
 	workPhone: string;
 	email: string;
@@ -16,6 +16,15 @@ export interface Job {
 	company: string;
 	jobTitle: string;
 	address: string;
+}
+
+export interface EmployeeFormValues {
+	firstName: string;
+	lastName: string;
+	birthdate: moment.Moment;
+	mobilePhone: string;
+	workPhone: string;
+	email: string;
 }
 
 export type CoworkersType = 'company' | 'job' | 'address';

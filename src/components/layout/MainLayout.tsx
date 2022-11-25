@@ -1,6 +1,6 @@
 import React from "react";
 import "./MainLayout.css";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Layout, Menu, MenuProps, PageHeader } from "antd";
 import { Route } from "antd/es/breadcrumb/Breadcrumb";
 
@@ -95,6 +95,7 @@ const itemRender = (route: Route, params: any, routes: Array<Route>, paths: Arra
 
 const MainLayout: React.FC = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
 	const title = breadcrumbTitles(location.pathname).breadcrumbName;
 	const path: string[] = location.pathname.split('/').filter(item => item !== '');
 	const routes = path.reduce((prev: Route[], curr) => {
@@ -103,7 +104,7 @@ const MainLayout: React.FC = () => {
 
 	return <Layout style={{ height: '100%' }}>
 		<Header>
-			<img className="logo" src="/logo.png" alt="Phonebook"/>
+			<img className="logo" src="/logo.png" alt="Phonebook" onClick={() => navigate("/")}/>
 			<Menu
 				theme="dark"
 				mode="horizontal"
